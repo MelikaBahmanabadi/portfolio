@@ -51,9 +51,11 @@ must be the public preview host (`3000-<suffix>`), never the sandbox host.
 
 `.github/workflows/deploy-pages.yml` builds a static export and publishes it to
 <https://melikabahmanabadi.github.io/portfolio/>. It runs on pushes to `main`
-once the repository has Pages enabled with source "GitHub Actions" (Settings →
-Pages); `GET /repos/:owner/:repo/pages` returning 404 means it is not enabled yet
-and the workflow's `configure-pages` step will fail.
+(and on manual dispatch). The first run creates the Pages site itself:
+`configure-pages` runs with `enablement: true` under `pages: write`. If the token
+may not create it, `GET /repos/:owner/:repo/pages` returns 404 and the step
+fails — enable Pages once under Settings → Pages → Source "GitHub Actions", then
+re-run the workflow.
 
 - `NEXT_PUBLIC_STATIC_EXPORT=1` is the only switch, set by the workflow. It makes
   `next.config.ts` export to `out/` with `basePath: /portfolio` and static images.
