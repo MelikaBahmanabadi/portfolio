@@ -1,5 +1,7 @@
 import Image from "next/image";
+import portrait from "@/public/images/melika-portrait.png";
 import { profile } from "@/data/profile";
+import { asset } from "@/lib/site";
 import { Reveal } from "./reveal";
 import { ArrowRightIcon, DownloadIcon, MapPinIcon, SparklesIcon } from "./icons";
 
@@ -35,7 +37,7 @@ export function Hero() {
                 Explore My Projects
                 <ArrowRightIcon />
               </a>
-              <a className="btn btn-outline" href="/api/resume" download>
+              <a className="btn btn-outline" href={asset("/resume.pdf")} download>
                 <DownloadIcon />
                 Download Resume
               </a>
@@ -75,7 +77,7 @@ export function Hero() {
             <div className="hero-blob hero-blob--front" aria-hidden />
             <div className="hero-portrait-frame">
               <Image
-                src="/images/melika-portrait.png"
+                src={portrait}
                 alt="Portrait of Melika Bahman-Abadi"
                 width={1254}
                 height={1254}

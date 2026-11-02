@@ -11,7 +11,7 @@ hand-written CSS.
 | `/` | Home: hero, about, expertise, projects, GitHub activity, experience, resume, contact |
 | `/projects/[slug]` | Case study: overview, problem, features, architecture, stack, source |
 | `/resume` | Full resume, print-friendly |
-| `/api/resume` | Generated PDF resume download |
+| `/resume.pdf` | Generated PDF resume download |
 | `/api/contact` | Contact-form endpoint (validation + storage + optional email) |
 | `/sitemap.xml`, `/robots.txt` | SEO plumbing |
 
@@ -50,6 +50,35 @@ npm start
 ```
 
 The Base44 sandbox uses `docker-compose.base44.yml` instead — see `AGENTS.md`.
+
+## Deploy to GitHub Pages
+
+The site is published as a static export to
+<https://melikabahmanabadi.github.io/portfolio/> by
+`.github/workflows/deploy-pages.yml` on every push to `main`.
+
+One-time setup in the repository: **Settings → Pages → Build and deployment →
+Source: “GitHub Actions”.** After that, the workflow builds and deploys on its
+own (or run it manually from the Actions tab).
+
+How the export is built:
+
+- `NEXT_PUBLIC_STATIC_EXPORT=1` makes `next.config.ts` emit `out/` with
+  `basePath: /portfolio` (project pages live under the repository name), static
+  images and `trailingSlash` routing.
+- The same flag prefixes plain links to exported files (`lib/site.ts`), so the
+  résumé PDF and Open Graph URLs resolve under the subpath.
+- GitHub Pages has no server, so the contact form is replaced on the published
+  build by a LinkedIn call to action. `POST /api/contact` still works in local
+  dev and on any Node host.
+
+Reproduce the published build locally:
+
+```bash
+NEXT_PUBLIC_STATIC_EXPORT=1 \
+NEXT_PUBLIC_SITE_URL=https://melikabahmanabadi.github.io/portfolio \
+npm run build          # emits out/
+```
 
 ## GitHub integration
 

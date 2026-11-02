@@ -11,8 +11,25 @@ const previewOrigin =
     ? [`3000-${process.env.BASE44_PUBLIC_HOST_SUFFIX}`]
     : [];
 
+/**
+ * GitHub Pages only serves static files. The deploy workflow sets
+ * NEXT_PUBLIC_STATIC_EXPORT=1 so the build exports to `out/` under the
+ * repository subpath (https://melikabahmanabadi.github.io/portfolio) — keep
+ * the base path in sync with `lib/site.ts`. Unset, nothing changes: `next dev`
+ * and `next build` keep the normal server build with the API routes.
+ */
+const githubPages = process.env.NEXT_PUBLIC_STATIC_EXPORT === "1";
+
 const nextConfig: NextConfig = {
   ...(previewOrigin.length > 0 ? { allowedDevOrigins: previewOrigin } : {}),
+  ...(githubPages
+    ? {
+        output: "export" as const,
+        basePath: "/portfolio",
+        trailingSlash: true,
+        images: { unoptimized: true },
+      }
+    : {}),
 };
 
 export default nextConfig;

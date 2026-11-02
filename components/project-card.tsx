@@ -1,6 +1,11 @@
 import Link from "next/link";
 import type { Project } from "@/data/projects";
-import { ArrowUpRightIcon, GitForkIcon, StarIcon } from "./icons";
+import {
+  ArrowRightIcon,
+  ArrowUpRightIcon,
+  GitForkIcon,
+  StarIcon,
+} from "./icons";
 import { ProjectCover } from "./project-cover";
 
 type ProjectCardProps = {
@@ -46,6 +51,7 @@ export function ProjectCard({ project, stars, index = 0 }: ProjectCardProps) {
         <div className="project-card-foot">
           <Link className="project-card-link" href={`/projects/${project.slug}`}>
             Case study
+            <ArrowRightIcon size={14} />
           </Link>
           <div className="project-card-meta">
             {typeof stars === "number" && stars > 0 ? (

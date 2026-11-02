@@ -1,4 +1,5 @@
 import Image from "next/image";
+import portrait from "@/public/images/melika-portrait.png";
 import { profile } from "@/data/profile";
 import { Reveal } from "./reveal";
 import { ArrowRightIcon, CheckIcon } from "./icons";
@@ -13,7 +14,7 @@ export function About() {
               <div className="about-portrait-blob" aria-hidden />
               <div className="about-portrait-frame">
                 <Image
-                  src="/images/melika-portrait.png"
+                  src={portrait}
                   alt="Melika Bahman-Abadi, AI Engineer"
                   width={1254}
                   height={1254}

@@ -21,7 +21,7 @@ Health: `curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/`
   GitHub activity block (the last one needs outbound access to api.github.com;
   it degrades to a link if rate-limited).
 - `/projects/persian-asr-pipeline` renders a full case study.
-- `/api/resume` returns a 2-page PDF (`%PDF-1.4`, valid `startxref`).
+- `/resume.pdf` returns a 2-page PDF (`%PDF-1.4`, valid `startxref`).
 - `POST /api/contact` with an invalid email returns 400; a valid payload returns
   `{"ok":true}` and appends to `.data/messages.jsonl`.
 
@@ -46,3 +46,35 @@ Health: `curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/`
 `BASE44_PREVIEW_MODE === "1"` and `BASE44_PUBLIC_HOST_SUFFIX` is set. With the
 flag unset (local dev, CI, production build) Next keeps its defaults. The origin
 must be the public preview host (`3000-<suffix>`), never the sandbox host.
+
+## GitHub Pages deployment
+
+`.github/workflows/deploy-pages.yml` builds a static export and publishes it to
+<https://melikabahmanabadi.github.io/portfolio/>. It runs on pushes to `main`
+once the repository has Pages enabled with source "GitHub Actions" (Settings →
+Pages); `GET /repos/:owner/:repo/pages` returning 404 means it is not enabled yet
+and the workflow's `configure-pages` step will fail.
+
+- `NEXT_PUBLIC_STATIC_EXPORT=1` is the only switch, set by the workflow. It makes
+  `next.config.ts` export to `out/` with `basePath: /portfolio` and static images.
+  Keep that base path in sync with `lib/site.ts`.
+- Plain `<a href>` and metadata files bypass Next's basePath rewrite, so they go
+  through `asset()` from `lib/site.ts`. `next/image` with a static import and
+  metadata image/canonical URLs already get the base path applied by Next — don't
+  prefix those twice.
+- Static export requires route handlers to be static: `/resume.pdf` and the
+  `robots`/`sitemap` routes carry `export const dynamic = "force-static"`. A
+  dotted route segment (`app/resume.pdf/route.ts`) keeps the `.pdf` filename in
+  the export.
+- `POST /api/contact` cannot exist on Pages, so `components/contact.tsx` renders a
+  LinkedIn fallback when the flag is set. The server endpoint is untouched for
+  dev/production.
+
+Reproduce the published build and check it under its real subpath:
+
+```bash
+NEXT_PUBLIC_STATIC_EXPORT=1 NEXT_PUBLIC_SITE_URL=https://melikabahmanabadi.github.io/portfolio npx next build
+# out/ serves at /portfolio — index.html must reference /portfolio/_next/...,
+# out/resume.pdf must start with %PDF, and sitemap/og:image URLs must carry the
+# subpath exactly once.
+```
