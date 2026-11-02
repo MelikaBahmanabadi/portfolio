@@ -57,9 +57,11 @@ The site is published as a static export to
 <https://melikabahmanabadi.github.io/portfolio/> by
 `.github/workflows/deploy-pages.yml` on every push to `main`.
 
-One-time setup in the repository: **Settings → Pages → Build and deployment →
-Source: “GitHub Actions”.** After that, the workflow builds and deploys on its
-own (or run it manually from the Actions tab).
+The first run enables Pages itself (`configure-pages` with `enablement: true`,
+using the workflow's `pages: write` permission). If the token is not allowed to
+create the site, enable it once under **Settings → Pages → Build and
+deployment → Source: “GitHub Actions”**, then re-run the workflow from the
+Actions tab.
 
 How the export is built:
 

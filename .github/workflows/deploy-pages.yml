@@ -1,8 +1,8 @@
 name: Deploy to GitHub Pages
 
 # Static export of the portfolio to https://melikabahmanabadi.github.io/portfolio/
-# Enable it once in the repository: Settings → Pages → Build and deployment →
-# Source: "GitHub Actions". Every push to main then rebuilds and deploys.
+# The first run creates the Pages site (configure-pages, enablement: true); after
+# that every push to main reloads and redeploys it.
 
 on:
   push:
@@ -38,6 +38,10 @@ jobs:
           NEXT_PUBLIC_SITE_URL: https://melikabahmanabadi.github.io/portfolio
 
       - uses: actions/configure-pages@v5
+        with:
+          # Creates the Pages site on the first run; afterwards it only reads config.
+          enablement: true
+
 
       - uses: actions/upload-pages-artifact@v3
         with:
