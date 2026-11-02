@@ -1,0 +1,22 @@
+{
+  "previewPort": 3000,
+  "healthPath": "/",
+  "startCommand": "docker compose -f docker-compose.base44.yml up -d",
+  "secrets": [
+    {
+      "name": "RESEND_API_KEY",
+      "description": "Optional. Resend API key (resend.com → API Keys) so contact-form messages are emailed to you. Messages are also stored in .data/messages.jsonl either way.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "CONTACT_TO_EMAIL",
+      "description": "Optional. The inbox that should receive contact-form messages. Used together with RESEND_API_KEY.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "GITHUB_TOKEN",
+      "description": "Optional. Read-only GitHub token (github.com → Settings → Developer settings → Personal access tokens) to raise the API rate limit for the live project/activity sections. The site works without it.",
+      "requiredAtBoot": false
+    }
+  ]
+}

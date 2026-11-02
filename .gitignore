@@ -1,0 +1,14 @@
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# Contact-form submissions written at runtime
+.data/
+
+# Local env overrides
+.env*.local
+
+# OS noise
+.DS_Store
