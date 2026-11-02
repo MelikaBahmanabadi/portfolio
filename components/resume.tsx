@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { resumeSkills } from "@/data/profile";
+import { asset } from "@/lib/site";
 import { DownloadIcon, FileTextIcon } from "./icons";
 import { Reveal } from "./reveal";
 
@@ -24,7 +25,7 @@ export function Resume() {
               </p>
 
               <div className="resume-actions">
-                <a className="btn btn-primary" href="/api/resume" download>
+                <a className="btn btn-primary" href={asset("/resume.pdf")} download>
                   <DownloadIcon />
                   Download PDF
                 </a>

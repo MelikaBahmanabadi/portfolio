@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { profile, socialLinks } from "@/data/profile";
+import { staticExport } from "@/lib/site";
 import {
   ArrowUpRightIcon,
   GithubIcon,
@@ -139,6 +140,29 @@ export function Contact() {
             </p>
           </div>
 
+          {staticExport ? (
+            <div className="contact-form">
+              <div className="field">
+                <strong>The form isn&rsquo;t connected on this copy</strong>
+                <span>
+                  This site is published on GitHub Pages, which serves static
+                  files only, so messages can&rsquo;t be delivered here.
+                  LinkedIn is the quickest way to reach me.
+                </span>
+              </div>
+              <div className="contact-actions">
+                <a
+                  className="btn btn-primary"
+                  href={socialLinks.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Message me on LinkedIn
+                  <ArrowUpRightIcon size={16} />
+                </a>
+              </div>
+            </div>
+          ) : (
           <form className="contact-form" onSubmit={onSubmit} noValidate>
             <div className="field-row">
               <div className="field">
@@ -219,6 +243,7 @@ export function Contact() {
               </p>
             </div>
           </form>
+          )}
         </div>
       </div>
     </section>

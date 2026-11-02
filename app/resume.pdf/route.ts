@@ -2,6 +2,13 @@ import { buildResumePdf } from "@/lib/pdf";
 
 export const runtime = "nodejs";
 
+/**
+ * Static by default so the GitHub Pages export (`next build` with
+ * GITHUB_PAGES=1) writes `resume.pdf` as a plain file. A dotted route segment
+ * keeps the `.pdf` filename in the exported site.
+ */
+export const dynamic = "force-static";
+
 export async function GET() {
   const pdf = buildResumePdf();
 

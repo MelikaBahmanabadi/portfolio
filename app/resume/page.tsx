@@ -10,6 +10,7 @@ import {
 } from "@/data/profile";
 import { projects } from "@/data/projects";
 import { DownloadIcon } from "@/components/icons";
+import { asset } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Resume",
@@ -27,7 +28,7 @@ export default function ResumePage() {
             <span aria-hidden>&larr;</span>
             Back to portfolio
           </Link>
-          <a className="btn btn-primary btn-sm" href="/api/resume" download>
+          <a className="btn btn-primary btn-sm" href={asset("/resume.pdf")} download>
             <DownloadIcon />
             Download PDF
           </a>
