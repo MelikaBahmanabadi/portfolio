@@ -190,6 +190,20 @@
   overflow: hidden;
   background: var(--navy);
   color: var(--cream);
+  border-block: 1px solid rgba(214, 169, 181, 0.18);
+}
+
+/* faint film grain so the large dark panel reads as printed paper
+   rather than a flat fill */
+.expertise-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.42;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
 }
 
 .expertise::before {
@@ -279,6 +293,16 @@
   background: rgba(214, 169, 181, 0.14);
   border: 1px solid rgba(214, 169, 181, 0.22);
   color: var(--rose-warm);
+  transition:
+    background 0.45s ease,
+    border-color 0.45s ease,
+    transform 0.45s var(--ease);
+}
+
+.expertise-card:hover .expertise-icon {
+  transform: translateY(-2px);
+  background: rgba(214, 169, 181, 0.22);
+  border-color: rgba(214, 169, 181, 0.4);
 }
 
 .expertise-card h3 {
@@ -751,11 +775,13 @@
   border-radius: var(--radius-lg);
   transition:
     transform 0.45s var(--ease),
-    box-shadow 0.45s ease;
+    box-shadow 0.45s ease,
+    border-color 0.45s ease;
 }
 
 .project-card:hover {
   transform: translateY(-6px);
+  border-color: rgba(183, 141, 158, 0.4);
   box-shadow: var(--shadow-soft);
 }
 
@@ -877,12 +903,25 @@
 }
 
 .project-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-size: 0.79rem;
   font-weight: 500;
   color: var(--navy);
   text-decoration: none;
   border-bottom: 1px solid rgba(23, 36, 61, 0.25);
   padding-bottom: 2px;
+  transition:
+    color 0.3s ease,
+    gap 0.3s var(--ease),
+    border-color 0.3s ease;
+}
+
+.project-card-link:hover {
+  gap: 10px;
+  color: var(--rose-deep);
+  border-color: rgba(140, 95, 113, 0.5);
 }
 
 .project-card-meta {
