@@ -1,0 +1,51 @@
+# Base44 sandbox runbook — development server straight from the cloned source.
+# Not the production deployment path: `npm run build && npm start` is.
+
+services:
+  web:
+    image: node:22
+    working_dir: /app
+    labels:
+      base44.project: "Melika Portfolio"
+      base44.kind: web
+      base44.port: "3000"
+    command:
+      - sh
+      - -ec
+      - |
+        npm install --no-audit --no-fund
+        exec npm run dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_TELEMETRY_DISABLED=1
+      # Bind-mounted source: file watching needs polling inside the sandbox.
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_USEPOLLING=true
+      # Consumed by next.config.ts (allowedDevOrigins) only when set to "1".
+      - BASE44_PREVIEW_MODE
+      - BASE44_PUBLIC_HOST_SUFFIX
+      - BASE44_SANDBOX_HOST_DOMAIN
+      - NEXT_PUBLIC_SITE_URL=https://3000-${BASE44_PUBLIC_HOST_SUFFIX}
+    env_file:
+      # Placeholders first, platform-delivered secrets last so they always win.
+      - ./.env.base44-defaults
+      - /run/base44/app.env
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:3000/').then((r) => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
+      interval: 20s
+      timeout: 5s
+      retries: 6
+      start_period: 75s
+    restart: on-failure
+
+volumes:
+  node_modules:
